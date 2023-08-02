@@ -1,4 +1,4 @@
-# API de Busca e Resposta de Perguntas na Wikipedia
+# WikiIA
 
 Esta é uma aplicação que coleta dados de páginas da Wikipedia, permite fazer perguntas sobre os dados coletados usando um modelo de perguntas e respostas baseado em BERT (Bidirectional Encoder Representations from Transformers), e mantém o controle dos tópicos já coletados.
 
@@ -15,10 +15,10 @@ pip install wikipedia-api beautifulsoup4 transformers sqlite3
 ```
 ## Como usar
 
-1. Navegue para o diretório raiz do projeto onde se encontra o arquivo `app.py`.
+1. Navegue para o diretório raiz do projeto onde se encontra o arquivo `WikiIA.py`.
 2. Execute o seguinte comando para iniciar a aplicação:
 ```
-python app.py
+python WikiIA.py
 ```
 3. O programa irá iniciar a coleta de dados das páginas da Wikipedia definidas no código. Após a coleta, você poderá fazer perguntas sobre os dados coletados.
 
@@ -32,7 +32,7 @@ python app.py
 
 ## Observações
 
-- Certifique-se de que o modelo BERT (neuralmind/bert-base-portuguese-cased) está instalado antes de executar o programa.
+- Certifique-se de que o modelo BERT (neuralmind/bert-base-portuguese-cased) está instalado na pasta trained_model antes de executar o programa.
 
 - Os dados coletados são armazenados no arquivo `wiki_data.db`, que é criado automaticamente.
 
