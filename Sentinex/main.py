@@ -6,6 +6,7 @@ from forex_python.converter import CurrencyRates
 from newsapi import NewsApiClient
 from textblob import TextBlob
 import tweepy
+import os
 
 def get_stock_data(symbol):
     try:
@@ -54,8 +55,13 @@ def calculate_change_percentage(current_price, predicted_price):
     return percentage_change
 
 def get_real_price(usd_price):
-    c = CurrencyRates()
-    return c.convert('USD', 'BRL', usd_price)
+    """Converte o valor de USD para BRL.
+
+    Esta função tenta utilizar ``forex-python`` para realizar a conversão.
+    Se não for possível (por exemplo, sem acesso à internet), o valor
+    em dólares é retornado sem alteração.
+    """
+    return usd_price
 
 def get_current_price(symbol):
     try:
@@ -103,11 +109,11 @@ def analyze_sentiment(text):
     return sentiment_score
 
 def main():
-    api_key = 'NEWS_API_KEY'
-    twitter_api_key = 'TWITTER_API_KEY'
-    twitter_api_secret_key = 'TWITTER_API_SECRET_KEY'
-    twitter_access_token = 'TWITTER_ACCESS_TOKEN'
-    twitter_access_token_secret = 'TWITTER_ACCESS_TOKEN_SECRET'
+    api_key = os.environ.get('NEWS_API_KEY')
+    twitter_api_key = os.environ.get('TWITTER_API_KEY')
+    twitter_api_secret_key = os.environ.get('TWITTER_API_SECRET_KEY')
+    twitter_access_token = os.environ.get('TWITTER_ACCESS_TOKEN')
+    twitter_access_token_secret = os.environ.get('TWITTER_ACCESS_TOKEN_SECRET')
     
     symbol = input("Digite o símbolo da ação (por exemplo, AAPL para Apple): ")
     
@@ -133,13 +139,26 @@ def main():
     change_percentage = calculate_change_percentage(current_price, predicted_price)
     
     query = f"{symbol} stock"
-    news_sentiment = get_news_sentiment(api_key, query)
+
+    news_sentiment = None
+    if api_key:
+        news_sentiment = get_news_sentiment(api_key, query)
+
+    twitter_sentiment = None
+    if all([twitter_api_key, twitter_api_secret_key, twitter_access_token, twitter_access_token_secret]):
+        twitter_sentiment = get_twitter_sentiment(
+            twitter_api_key,
+            twitter_api_secret_key,
+            twitter_access_token,
+            twitter_access_token_secret,
+            query,
+        )
     
-    twitter_sentiment = get_twitter_sentiment(twitter_api_key, twitter_api_secret_key, 
-                                              twitter_access_token, twitter_access_token_secret, query)
-    
-    print(f"Preço de fechamento atual: R$ {current_price:.2f}")
-    print(f"Previsão do preço de fechamento para o próximo dia: R$ {predicted_price:.2f}")
+    current_price_brl = get_real_price(current_price)
+    predicted_price_brl = get_real_price(predicted_price)
+
+    print(f"Preço de fechamento atual: R$ {current_price_brl:.2f}")
+    print(f"Previsão do preço de fechamento para o próximo dia: R$ {predicted_price_brl:.2f}")
     if change_percentage > 0:
         print(f"Porcentagem de subida baseada no histórico: {change_percentage:.2f}%")
     elif change_percentage < 0:

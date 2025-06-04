@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 import json
 from transformers import BertTokenizer, BertForQuestionAnswering
 from torch.utils.data import DataLoader, Dataset
-from transformers import AdamW
+from transformers.optimization import AdamW
 import torch
 
 # Carregar o tokenizer

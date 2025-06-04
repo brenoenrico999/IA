@@ -57,10 +57,11 @@ Executando o Código
 ### Instale as dependências necessárias:
 
 ```bash
-pip install numpy pandas scikit-learn tensorflow matplotlib
+pip install numpy pandas scikit-learn tensorflow matplotlib yfinance
 ```
 
-Substitua o caminho do arquivo CSV no código para o local onde seus dados estão armazenados.
+O script faz o download automático dos dados de preço do Bitcoin utilizando a biblioteca `yfinance`,
+portanto não é necessário fornecer um arquivo CSV manualmente.
 
 
 ## Observações
