@@ -4,11 +4,11 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, GRU, Dense
 import matplotlib.pyplot as plt
+import yfinance as yf
 
-# Carregar os dados históricos do Bitcoin
-# Substitua esta parte pelo código de carregamento dos dados da Binance API ou outra fonte
-# Exemplo de carregamento de dados de um arquivo CSV:
-bitcoin_data = pd.read_csv('bitcoin_price_data.csv')
+# Carregar os dados históricos do Bitcoin usando yfinance
+# Baixa 60 dias de dados com intervalo de 1 hora
+bitcoin_data = yf.download("BTC-USD", period="60d", interval="1h")
 
 # Pré-processamento dos dados
 scaler = MinMaxScaler()
@@ -29,10 +29,10 @@ train_size = int(len(bitcoin_data) * 0.8)  # 80% dos dados para treinamento
 data = bitcoin_data['Close'].values
 train_data = data[:train_size]
 test_data = data[train_size:]
-X_train = create_sequences(train_data, sequence_length)
-y_train = data[sequence_length:train_size + sequence_length]
-X_test = create_sequences(test_data, sequence_length)
-y_test = data[sequence_length + train_size:]
+X_train = create_sequences(train_data, sequence_length).astype(np.float32)
+y_train = train_data[sequence_length:].astype(np.float32)
+X_test = create_sequences(test_data, sequence_length).astype(np.float32)
+y_test = test_data[sequence_length:].astype(np.float32)
 
 # Adicionar dimensão de características para LSTM/GRU
 X_train = X_train[..., np.newaxis]
@@ -68,12 +68,12 @@ predicted_values = model.predict(X_test)
 predicted_values = scaler.inverse_transform(predicted_values)
 y_test_real = scaler.inverse_transform(y_test.reshape(-1, 1))
 
-# Prever o valor da próxima hora
-last_sequence = data[-sequence_length:]
-last_sequence = last_sequence.reshape((1, sequence_length, 1))  # Ajustar formato para o modelo
-next_hour_prediction = model.predict(last_sequence)
-next_hour_prediction = scaler.inverse_transform(next_hour_prediction)
-print(f"Valor previsto para a próxima hora: {next_hour_prediction[0][0]}")
+# Prever o valor da próxima hora (opcional)
+# last_sequence = data[-sequence_length:]
+# last_sequence = last_sequence.reshape((1, sequence_length, 1)).astype(np.float32)
+# next_hour_prediction = model.predict(last_sequence, verbose=0)
+# next_hour_prediction = scaler.inverse_transform(next_hour_prediction)
+# print(f"Valor previsto para a próxima hora: {next_hour_prediction[0][0]}")
 
 # Visualizar os resultados
 plt.figure(figsize=(14, 7))

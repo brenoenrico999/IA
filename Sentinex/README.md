@@ -31,16 +31,17 @@ News API: Crie uma conta em News API e obtenha uma chave de API.
 
 Twitter API: Crie uma conta de desenvolvedor no Twitter Developer e obtenha suas chaves de API e tokens.
 
-Substitua as Chaves no Código:
-No arquivo main.py, substitua os seguintes valores pelos seus dados pessoais:
+Defina as chaves por meio de variáveis de ambiente antes de executar o script:
 
-```python
-api_key = 'NEWS_API'
-twitter_api_key = 'TWITTER_API'
-twitter_api_secret_key = 'TWITTER_API_SECRET_KEY'
-twitter_access_token = 'TWITTER_ACCESS_TOKEN'
-twitter_access_token_secret = 'TWITTER_ACCESS_TOKEN_SECRET'
+```bash
+export NEWS_API_KEY="sua_chave_newsapi"
+export TWITTER_API_KEY="sua_chave_twitter"
+export TWITTER_API_SECRET_KEY="seu_secret_key"
+export TWITTER_ACCESS_TOKEN="seu_access_token"
+export TWITTER_ACCESS_TOKEN_SECRET="seu_access_secret"
 ```
+Caso essas variáveis não sejam definidas, o script executa apenas a previsão de preços
+e ignora a análise de sentimento.
 ## Executando o Código
 Para executar o código, simplesmente execute o script Python:
 

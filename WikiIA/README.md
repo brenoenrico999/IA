@@ -4,14 +4,14 @@ Esta é uma aplicação que coleta dados de páginas da Wikipedia, permite fazer
 
 ## Requisitos
 - Python 3.x
-- Bibliotecas: `wikipedia-api`, `beautifulsoup4`, `transformers`, `sqlite3`, `datetime`, `json`
+- Bibliotecas: `wikipedia-api`, `beautifulsoup4`, `transformers`, `torch`, `datetime`, `json`
 
 ## Instalação
 1. Clone este repositório para o seu computador.
 2. Certifique-se de que o Python 3.x esteja instalado. Caso não esteja instalado, baixe-o em https://www.python.org/downloads/ e siga as instruções de instalação para o seu sistema operacional.
 3. Instale as bibliotecas necessárias executando o seguinte comando no terminal ou prompt de comando:
 ```
-pip install wikipedia-api beautifulsoup4 transformers sqlite3
+pip install wikipedia-api beautifulsoup4 transformers torch
 ```
 ## Como usar
 
